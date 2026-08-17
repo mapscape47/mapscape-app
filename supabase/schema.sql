@@ -54,6 +54,20 @@ create table public.scans (
   scanned_at timestamptz not null default now()
 );
 
+-- Non-commission tourist spots (forts, waterfalls, viewpoints). Separate
+-- from activities since they carry no pricing/vendor/booking data — just
+-- enough to render a landing page with a "Get Directions" link.
+create table public.attractions (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  slug text not null unique,
+  description text,
+  latitude double precision not null,
+  longitude double precision not null,
+  image_url text,
+  is_active boolean not null default true
+);
+
 -- Row Level Security: enabled with no policies, so the public/publishable
 -- key has zero access via the REST API. All access goes through the
 -- service_role (secret) key from trusted server-side code, which bypasses
@@ -64,13 +78,20 @@ alter table public.activities enable row level security;
 alter table public.leads enable row level security;
 alter table public.bookings enable row level security;
 alter table public.scans enable row level security;
+alter table public.attractions enable row level security;
 
 -- The public QR-code landing pages (mapscape.app/<slug>) need to read
--- activity details with no logged-in user, so this narrow policy opens
--- read access to just the active-activity rows via the publishable key.
--- vendors/leads/bookings/scans stay fully locked to the service_role key.
+-- activity/attraction details with no logged-in user, so these narrow
+-- policies open read access to just the active rows via the publishable
+-- key. vendors/leads/bookings/scans stay fully locked to the service_role key.
 create policy "Public can view active activities"
 on public.activities
+for select
+to anon, authenticated
+using (is_active = true);
+
+create policy "Public can view active attractions"
+on public.attractions
 for select
 to anon, authenticated
 using (is_active = true);

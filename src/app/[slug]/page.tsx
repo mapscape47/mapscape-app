@@ -1,41 +1,10 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { SiteHeader } from "@/components/SiteHeader";
-import { ImageSlider } from "@/components/ImageSlider";
-import { PriceTierCard } from "@/components/PriceTierCard";
-import { StickyContactBar } from "@/components/StickyContactBar";
-import { SiteFooter } from "@/components/SiteFooter";
+import { ActivityPageView } from "@/components/ActivityPageView";
+import { AttractionPageView } from "@/components/AttractionPageView";
+import type { Category, PriceTier } from "@/lib/contact";
 
-type Category = "water" | "land" | "nature";
-
-type PriceTier = {
-  name: string;
-  price: number;
-  image?: string;
-};
-
-const WHATSAPP_NUMBERS: Record<Category, string | undefined> = {
-  water: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_WATER,
-  land: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_LAND_NATURE,
-  nature: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_LAND_NATURE,
-};
-
-const CATEGORY_LABELS: Record<Category, string> = {
-  water: "Water",
-  land: "Land",
-  nature: "Nature",
-};
-
-function whatsAppLink(phone: string | undefined, message: string) {
-  const base = phone ? `https://wa.me/${phone}` : "https://wa.me/";
-  return `${base}?text=${encodeURIComponent(message)}`;
-}
-
-function callLink(phone: string | undefined) {
-  return phone ? `tel:+${phone}` : "tel:";
-}
-
-export default async function ActivityPage({
+export default async function SlugPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -49,57 +18,41 @@ export default async function ActivityPage({
     .eq("slug", slug)
     .single();
 
-  if (!activity) {
-    notFound();
+  if (activity) {
+    return (
+      <ActivityPageView
+        activity={{
+          ...activity,
+          category: activity.category as Category,
+          price_tiers: (activity.price_tiers ?? []) as PriceTier[],
+        }}
+      />
+    );
   }
 
-  const category = activity.category as Category;
-  const priceTiers = (activity.price_tiers ?? []) as PriceTier[];
-  const phone = WHATSAPP_NUMBERS[category];
-  const categoryLabel = CATEGORY_LABELS[category];
+  const { data: attraction } = await supabase
+    .from("attractions")
+    .select("name, description, latitude, longitude, image_url")
+    .eq("slug", slug)
+    .single();
 
-  return (
-    <div
-      className="relative min-h-screen bg-stone-50 bg-top bg-repeat-y"
-      style={{ backgroundImage: "url('/backgrounds/beach-illustration.webp')" }}
-    >
-      <SiteHeader />
-      <ImageSlider />
+  if (attraction) {
+    const { data: suggestedActivities } = await supabase
+      .from("activities")
+      .select("name, slug, category, image_url")
+      .eq("is_active", true)
+      .limit(4);
 
-      <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">
-        <div className="rounded-2xl border border-amber-950/20 bg-amber-900 p-4 shadow-md">
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">{activity.name}</h1>
-
-          {activity.description && (
-            <p className="mt-2 text-sm leading-relaxed text-amber-100">{activity.description}</p>
-          )}
-        </div>
-
-        <div className="mt-6 flex flex-col gap-4">
-          {priceTiers.map((tier) => (
-            <PriceTierCard
-              key={tier.name}
-              title={tier.name}
-              price={tier.price}
-              tag={categoryLabel}
-              imageUrl={tier.image}
-              ctaHref={whatsAppLink(phone, `Hi, I'm inquiring about ${activity.name} - ${tier.name}`)}
-            />
-          ))}
-        </div>
-      </main>
-
-      <SiteFooter
-        whatsAppHref={whatsAppLink(phone, `Hi, I'm inquiring about ${activity.name}`)}
-        callHref={callLink(phone)}
+    return (
+      <AttractionPageView
+        attraction={attraction}
+        suggestedActivities={(suggestedActivities ?? []).map((a) => ({
+          ...a,
+          category: a.category as Category,
+        }))}
       />
+    );
+  }
 
-      <StickyContactBar
-        whatsAppHref={whatsAppLink(phone, `Hi, I'm inquiring about ${activity.name}`)}
-        whatsAppLabel="Chat on WhatsApp"
-        callHref={callLink(phone)}
-        callLabel="Call Us"
-      />
-    </div>
-  );
+  notFound();
 }
