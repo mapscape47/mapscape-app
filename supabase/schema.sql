@@ -64,7 +64,7 @@ create table public.attractions (
   description text,
   latitude double precision not null,
   longitude double precision not null,
-  image_url text,
+  image_urls text[] not null default '{}',
   is_active boolean not null default true
 );
 

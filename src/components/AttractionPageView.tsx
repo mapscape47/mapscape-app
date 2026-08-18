@@ -9,7 +9,7 @@ type Attraction = {
   description: string | null;
   latitude: number;
   longitude: number;
-  image_url: string | null;
+  image_urls: string[];
 };
 
 type SuggestedActivity = {
@@ -37,7 +37,7 @@ export function AttractionPageView({
       footerWhatsAppHref={whatsAppLink(GENERAL_PHONE, "Hi, I'm interested in Mapscape experiences in Goa")}
       footerCallHref={callLink(GENERAL_PHONE)}
     >
-      <ImageSlider />
+      <ImageSlider images={attraction.image_urls} />
 
       <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">
         <div className="rounded-2xl border border-amber-950/20 bg-amber-900 p-4 shadow-md">

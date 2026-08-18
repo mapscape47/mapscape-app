@@ -32,7 +32,7 @@ export default async function SlugPage({
 
   const { data: attraction } = await supabase
     .from("attractions")
-    .select("name, description, latitude, longitude, image_url")
+    .select("name, description, latitude, longitude, image_urls")
     .eq("slug", slug)
     .single();
 
@@ -45,7 +45,7 @@ export default async function SlugPage({
 
     return (
       <AttractionPageView
-        attraction={attraction}
+        attraction={{ ...attraction, image_urls: attraction.image_urls ?? [] }}
         suggestedActivities={(suggestedActivities ?? []).map((a) => ({
           ...a,
           category: a.category as Category,
