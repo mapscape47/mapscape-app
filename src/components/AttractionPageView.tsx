@@ -42,8 +42,8 @@ export function AttractionPageView({
       </div>
 
       <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">
-        <div className="rounded-2xl border border-amber-950/20 bg-amber-900 p-4 shadow-md">
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">{attraction.name}</h1>
+        <div className="rounded-2xl border border-amber-950/20 bg-amber-900 p-4 text-center shadow-md">
+          <h1 className="font-heading text-2xl font-bold text-white sm:text-3xl">{attraction.name}</h1>
         </div>
 
         <a
@@ -57,14 +57,14 @@ export function AttractionPageView({
         </a>
 
         {attraction.description && (
-          <div className="mt-4 rounded-2xl border border-amber-950/20 bg-amber-900 p-4 shadow-md">
+          <div className="mt-4 rounded-2xl border border-amber-950/20 bg-amber-900 p-4 text-center shadow-md">
             <p className="text-sm leading-relaxed text-amber-100">{attraction.description}</p>
           </div>
         )}
 
         {suggestedActivities.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-lg font-bold text-stone-800">You Might Also Like</h2>
+            <h2 className="font-heading text-lg font-bold text-stone-800">You Might Also Like</h2>
             <div className="mt-4 flex flex-col gap-4">
               {suggestedActivities.map((activity) => (
                 <PriceTierCard

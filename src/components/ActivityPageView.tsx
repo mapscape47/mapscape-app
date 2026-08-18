@@ -41,8 +41,8 @@ export function ActivityPageView({ activity }: { activity: Activity }) {
       </div>
 
       <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">
-        <div className="rounded-2xl border border-amber-950/20 bg-amber-900 p-4 shadow-md">
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">{activity.name}</h1>
+        <div className="rounded-2xl border border-amber-950/20 bg-amber-900 p-4 text-center shadow-md">
+          <h1 className="font-heading text-2xl font-bold text-white sm:text-3xl">{activity.name}</h1>
 
           {activity.description && (
             <p className="mt-2 text-sm leading-relaxed text-amber-100">{activity.description}</p>

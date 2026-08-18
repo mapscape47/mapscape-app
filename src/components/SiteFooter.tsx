@@ -55,7 +55,7 @@ export function SiteFooter({
       <div className="mx-auto max-w-lg sm:max-w-2xl">
         <div className="flex items-center gap-2">
           <Image src="/mapscape-logo.webp" alt="Mapscape" width={40} height={40} />
-          <span className="text-lg font-bold text-white">Mapscape</span>
+          <span className="font-heading text-lg font-bold text-white">Mapscape</span>
         </div>
         <p className="mt-2 text-sm text-amber-100">Inspiring Travel</p>
 
