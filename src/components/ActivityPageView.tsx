@@ -36,7 +36,9 @@ export function ActivityPageView({ activity }: { activity: Activity }) {
         />
       }
     >
-      <ImageSlider />
+      <div className="mx-auto max-w-lg px-4 pt-4 sm:max-w-2xl">
+        <ImageSlider />
+      </div>
 
       <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">
         <div className="rounded-2xl border border-amber-950/20 bg-amber-900 p-4 shadow-md">

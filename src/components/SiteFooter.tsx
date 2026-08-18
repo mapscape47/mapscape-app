@@ -51,7 +51,7 @@ export function SiteFooter({
   email = "mapscape47@gmail.com",
 }: SiteFooterProps) {
   return (
-    <footer className="bg-amber-900 px-4 pt-8 pb-40 text-amber-50">
+    <footer className="bg-amber-900 px-4 pt-8 pb-8 text-amber-50">
       <div className="mx-auto max-w-lg sm:max-w-2xl">
         <div className="flex items-center gap-2">
           <Image src="/mapscape-logo.webp" alt="Mapscape" width={40} height={40} />
@@ -141,6 +141,10 @@ export function SiteFooter({
               ))}
             </div>
           </div>
+        </div>
+
+        <div className="mt-8 border-t border-white/10 pt-4">
+          <p className="text-center text-xs text-amber-200/70">© 2026 Mapscape. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -64,7 +64,7 @@ export function ImageSlider({ images }: { images?: string[] }) {
 
   return (
     <div
-      className="relative bg-stone-100"
+      className="relative overflow-hidden rounded-2xl border-[10px] border-amber-900 bg-stone-100"
       onPointerDown={pauseAndScheduleResume}
       onTouchStart={pauseAndScheduleResume}
       onWheel={pauseAndScheduleResume}

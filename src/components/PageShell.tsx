@@ -18,11 +18,16 @@ export function PageShell({
   return (
     <div
       className="relative min-h-screen bg-stone-50 bg-top bg-repeat-y"
-      style={{ backgroundImage: "url('/backgrounds/beach-illustration.webp')" }}
+      style={{
+        backgroundImage: "url('/backgrounds/beach-illustration.webp')",
+        backgroundSize: "100% auto",
+      }}
     >
       <SiteHeader />
       {children}
       <SiteFooter whatsAppHref={footerWhatsAppHref} callHref={footerCallHref} />
+      {/* Clearance so the fixed sticky bar doesn't cover the footer's own content — only needed on pages that render one. */}
+      {stickyBar && <div className="h-32 bg-amber-900" aria-hidden="true" />}
       {stickyBar}
     </div>
   );
