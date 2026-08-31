@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { ActivityPageView } from "@/components/ActivityPageView";
+import { CategoryPageView } from "@/components/CategoryPageView";
 import { AttractionPageView } from "@/components/AttractionPageView";
-import type { Category, PriceTier } from "@/lib/contact";
+import type { Category } from "@/lib/contact";
+import type { Listing } from "@/lib/listings";
 
 export default async function SlugPage({
   params,
@@ -14,18 +15,27 @@ export default async function SlugPage({
 
   const { data: activity } = await supabase
     .from("activities")
-    .select("name, category, description, price_tiers, image_url")
+    .select("name, slug, category, description, image_urls")
     .eq("slug", slug)
     .single();
 
   if (activity) {
+    const { data: listings } = await supabase
+      .from("listings")
+      .select(
+        "activity_category, slug, name, description, overview_points, photos, location_address, location_lat, location_lng, quick_answers, pricing_type, pricing_data, contact_type"
+      )
+      .eq("activity_category", slug)
+      .eq("is_active", true);
+
     return (
-      <ActivityPageView
-        activity={{
+      <CategoryPageView
+        category={{
           ...activity,
           category: activity.category as Category,
-          price_tiers: (activity.price_tiers ?? []) as PriceTier[],
+          image_urls: activity.image_urls ?? [],
         }}
+        listings={(listings ?? []) as unknown as Listing[]}
       />
     );
   }
