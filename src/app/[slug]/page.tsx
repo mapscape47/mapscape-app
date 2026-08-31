@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { CategoryPageView } from "@/components/CategoryPageView";
 import { AttractionPageView } from "@/components/AttractionPageView";
+import { RentalChoicePage } from "@/components/RentalChoicePage";
 import type { Category } from "@/lib/contact";
 import type { Listing } from "@/lib/listings";
 
@@ -11,6 +12,13 @@ export default async function SlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  // Rentals use a simple binary-choice landing page instead of the
+  // standard listings-driven category template — no DB lookup needed.
+  if (slug === "rental") {
+    return <RentalChoicePage />;
+  }
+
   const supabase = await createClient();
 
   const { data: activity } = await supabase
