@@ -88,7 +88,10 @@ export function PricingSection({ listing }: { listing: Listing }) {
             </div>
             <div className="mt-3">
               <BookNowButton
-                href={whatsAppLink(phone, bookingMessage(listing.name, service.service_name))}
+                href={whatsAppLink(
+                  phone,
+                  `Hi Mapscape, I would like to book ${service.service_name} at ${listing.name}.`
+                )}
               />
             </div>
           </div>
