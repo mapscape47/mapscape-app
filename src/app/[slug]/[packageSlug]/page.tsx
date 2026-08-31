@@ -60,9 +60,9 @@ export default async function ListingPage({
 
   const parentName = parentActivity?.name ?? humanizeSlug(slug);
 
-  // Restaurants have no pricing/booking section — a dedicated detail view
-  // renders the Menu section in its place.
-  if (slug === "restaurants") {
+  // Restaurants/cafes have no pricing/booking section — a dedicated detail
+  // view renders the Menu section in its place.
+  if (slug === "restaurants" || slug === "cafe") {
     return (
       <RestaurantDetailPageView
         listing={listing as unknown as Listing & { menu_pdf_url: string | null }}

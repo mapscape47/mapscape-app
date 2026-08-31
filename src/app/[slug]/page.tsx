@@ -56,10 +56,10 @@ export default async function SlugPage({
       image_urls: activity.image_urls ?? [],
     };
 
-    // Restaurants are informational only — no pricing, so their cards
+    // Restaurants/cafes are informational only — no pricing, so their cards
     // (photo, cuisine, timings) render via a dedicated component instead
     // of the shared price-driven CategoryPageView.
-    if (slug === "restaurants") {
+    if (slug === "restaurants" || slug === "cafe") {
       return (
         <RestaurantListPageView
           category={categorySummary}
