@@ -98,6 +98,9 @@ create table public.listings (
   pricing_data jsonb not null,
   contact_type text not null check (contact_type in ('water', 'land')),
   is_active boolean not null default true,
+  -- Link to an uploaded PDF (e.g. Supabase Storage) for the Menu section.
+  -- Restaurant listings only; null everywhere else and the section doesn't render.
+  menu_pdf_url text,
   unique (activity_category, slug)
 );
 

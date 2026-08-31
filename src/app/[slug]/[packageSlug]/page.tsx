@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { ListingPageView } from "@/components/ListingPageView";
 import { RentalListPageView, type RentalVehicle } from "@/components/RentalListPageView";
+import { RestaurantDetailPageView } from "@/components/RestaurantDetailPageView";
 import type { Listing } from "@/lib/listings";
 
 function humanizeSlug(slug: string) {
@@ -41,7 +42,7 @@ export default async function ListingPage({
   const { data: listing } = await supabase
     .from("listings")
     .select(
-      "activity_category, slug, name, description, overview_points, photos, location_address, location_lat, location_lng, quick_answers, pricing_type, pricing_data, contact_type"
+      "activity_category, slug, name, description, overview_points, photos, location_address, location_lat, location_lng, quick_answers, pricing_type, pricing_data, contact_type, menu_pdf_url"
     )
     .eq("activity_category", slug)
     .eq("slug", packageSlug)
@@ -57,11 +58,25 @@ export default async function ListingPage({
     .eq("slug", slug)
     .single();
 
+  const parentName = parentActivity?.name ?? humanizeSlug(slug);
+
+  // Restaurants have no pricing/booking section — a dedicated detail view
+  // renders the Menu section in its place.
+  if (slug === "restaurants") {
+    return (
+      <RestaurantDetailPageView
+        listing={listing as unknown as Listing & { menu_pdf_url: string | null }}
+        parentSlug={slug}
+        parentName={parentName}
+      />
+    );
+  }
+
   return (
     <ListingPageView
       listing={listing as unknown as Listing}
       parentSlug={slug}
-      parentName={parentActivity?.name ?? humanizeSlug(slug)}
+      parentName={parentName}
     />
   );
 }

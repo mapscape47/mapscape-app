@@ -4,6 +4,7 @@ import { CategoryPageView } from "@/components/CategoryPageView";
 import { AttractionPageView } from "@/components/AttractionPageView";
 import { RentalChoicePage } from "@/components/RentalChoicePage";
 import { TaxiPageView, type TaxiCar } from "@/components/TaxiPageView";
+import { RestaurantListPageView } from "@/components/RestaurantListPageView";
 import type { Category } from "@/lib/contact";
 import type { Listing } from "@/lib/listings";
 
@@ -49,13 +50,27 @@ export default async function SlugPage({
       .eq("activity_category", slug)
       .eq("is_active", true);
 
+    const categorySummary = {
+      ...activity,
+      category: activity.category as Category,
+      image_urls: activity.image_urls ?? [],
+    };
+
+    // Restaurants are informational only — no pricing, so their cards
+    // (photo, cuisine, timings) render via a dedicated component instead
+    // of the shared price-driven CategoryPageView.
+    if (slug === "restaurants") {
+      return (
+        <RestaurantListPageView
+          category={categorySummary}
+          listings={(listings ?? []) as unknown as Listing[]}
+        />
+      );
+    }
+
     return (
       <CategoryPageView
-        category={{
-          ...activity,
-          category: activity.category as Category,
-          image_urls: activity.image_urls ?? [],
-        }}
+        category={categorySummary}
         listings={(listings ?? []) as unknown as Listing[]}
       />
     );
