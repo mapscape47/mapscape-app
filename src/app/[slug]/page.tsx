@@ -76,19 +76,23 @@ export default async function SlugPage({
     );
   }
 
-  const { data: attraction } = await supabase
-    .from("attractions")
-    .select("name, description, latitude, longitude, image_urls")
-    .eq("slug", slug)
-    .single();
-
-  if (attraction) {
-    const { data: suggestedActivities } = await supabase
+  // Run both queries concurrently rather than waiting on the attraction
+  // lookup before starting the suggested-activities one — they don't
+  // depend on each other's results, only on the attraction existing.
+  const [{ data: attraction }, { data: suggestedActivities }] = await Promise.all([
+    supabase
+      .from("attractions")
+      .select("name, description, latitude, longitude, image_urls")
+      .eq("slug", slug)
+      .single(),
+    supabase
       .from("activities")
       .select("name, slug, category, image_url")
       .eq("is_active", true)
-      .limit(4);
+      .limit(4),
+  ]);
 
+  if (attraction) {
     return (
       <AttractionPageView
         attraction={{ ...attraction, image_urls: attraction.image_urls ?? [] }}

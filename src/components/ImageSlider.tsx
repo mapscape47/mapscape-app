@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 // Placeholder gradient slides in the muted palette — swap for real
 // illustrated assets once they're ready by passing an `images` prop.
@@ -75,10 +76,16 @@ export function ImageSlider({ images }: { images?: string[] }) {
         className="flex h-56 w-full snap-x snap-mandatory overflow-x-auto scroll-smooth sm:h-72 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide, i) => (
-          <div key={i} className="h-full w-full flex-shrink-0 snap-center">
+          <div key={i} className="relative h-full w-full flex-shrink-0 snap-center">
             {usingRealImages ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={slide} alt="" className="h-full w-full object-cover" />
+              <Image
+                src={slide}
+                alt=""
+                fill
+                sizes="(max-width: 640px) 100vw, 672px"
+                className="object-cover"
+                priority={i === 0}
+              />
             ) : (
               <div className={`h-full w-full bg-gradient-to-br ${slide}`} />
             )}
