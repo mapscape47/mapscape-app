@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     return [
       { source: "/attractions/:path*", headers: STATIC_IMAGE_CACHE_HEADERS },
       { source: "/backgrounds/:path*", headers: STATIC_IMAGE_CACHE_HEADERS },
+      { source: "/activities/:path*", headers: STATIC_IMAGE_CACHE_HEADERS },
     ];
   },
 };
