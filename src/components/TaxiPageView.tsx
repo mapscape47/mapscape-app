@@ -49,7 +49,7 @@ export function TaxiPageView({ cars }: { cars: TaxiCar[] }) {
               capacity={findAnswer(car.quick_answers, "Capacity")}
               originalPrice={car.pricing_data.price.original_price}
               displayPrice={car.pricing_data.price.display_price}
-              bookNowHref={whatsAppLink(phone, `Hi Mapscape, I need to book ${car.name} taxi.`)}
+              bookNowHref={whatsAppLink(phone, `Hi Mapscape, I would like to book ${car.name}.`)}
             />
           ))}
         </div>
