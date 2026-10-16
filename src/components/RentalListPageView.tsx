@@ -73,9 +73,18 @@ export function RentalListPageView({
               seatingCapacity={
                 vehicleType === "car" ? findAnswer(vehicle.quick_answers, "Seating Capacity") : null
               }
-              originalPrice={vehicle.pricing_data.price.original_price}
-              displayPrice={vehicle.pricing_data.price.display_price}
-              bookNowHref={whatsAppLink(phone, `Hi Mapscape, I need to book ${vehicle.name}.`)}
+              originalPrice={
+                findAnswer(vehicle.quick_answers, "Price Range")
+                  ? undefined
+                  : vehicle.pricing_data.price.original_price
+              }
+              displayPrice={
+                findAnswer(vehicle.quick_answers, "Price Range")
+                  ? undefined
+                  : vehicle.pricing_data.price.display_price
+              }
+              priceLabel={findAnswer(vehicle.quick_answers, "Price Range")}
+              bookNowHref={whatsAppLink(phone, `Hi Mapscape, I would like to book ${vehicle.name}.`)}
             />
           ))}
         </div>

@@ -8,7 +8,8 @@ type RentalVehicleCardProps = {
   transmission: string | null;
   seatingCapacity: string | null;
   originalPrice?: number | null;
-  displayPrice: number;
+  displayPrice?: number;
+  priceLabel?: string | null;
   bookNowHref: string;
 };
 
@@ -20,6 +21,7 @@ export function RentalVehicleCard({
   seatingCapacity,
   originalPrice,
   displayPrice,
+  priceLabel,
   bookNowHref,
 }: RentalVehicleCardProps) {
   return (
@@ -46,8 +48,14 @@ export function RentalVehicleCard({
         )}
 
         <div className="mt-2 flex items-baseline gap-1.5">
-          <PriceDisplay originalPrice={originalPrice} displayPrice={displayPrice} size="md" />
-          <span className="text-sm text-amber-100">/day</span>
+          {displayPrice !== undefined ? (
+            <>
+              <PriceDisplay originalPrice={originalPrice} displayPrice={displayPrice} size="md" />
+              <span className="text-sm text-amber-100">/day</span>
+            </>
+          ) : (
+            priceLabel && <span className="text-xl font-bold text-white">{priceLabel}</span>
+          )}
         </div>
 
         <div className="mt-3">
