@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { ListingPageView } from "@/components/ListingPageView";
 import { RentalListPageView, type RentalVehicle } from "@/components/RentalListPageView";
 import { RestaurantDetailPageView } from "@/components/RestaurantDetailPageView";
+import { SalonSpaDetailPageView } from "@/components/SalonSpaDetailPageView";
 import type { Listing } from "@/lib/listings";
 
 function humanizeSlug(slug: string) {
@@ -65,6 +66,19 @@ export default async function ListingPage({
   if (slug === "restaurants" || slug === "cafe") {
     return (
       <RestaurantDetailPageView
+        listing={listing as unknown as Listing & { menu_pdf_url: string | null }}
+        parentSlug={slug}
+        parentName={parentName}
+      />
+    );
+  }
+
+  // Salon & Spa also has no pricing/booking section (PDF menu instead),
+  // but shows one or more branch map links in place of a single Location
+  // card, since a listing can have several real-world branches.
+  if (slug === "salon-spa") {
+    return (
+      <SalonSpaDetailPageView
         listing={listing as unknown as Listing & { menu_pdf_url: string | null }}
         parentSlug={slug}
         parentName={parentName}

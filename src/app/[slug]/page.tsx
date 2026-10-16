@@ -56,10 +56,10 @@ export default async function SlugPage({
       image_urls: activity.image_urls ?? [],
     };
 
-    // Restaurants/cafes are informational only — no pricing, so their cards
-    // (photo, cuisine, timings) render via a dedicated component instead
-    // of the shared price-driven CategoryPageView.
-    if (slug === "restaurants" || slug === "cafe") {
+    // Restaurants/cafes/salon-spa are informational only — no pricing, so
+    // their cards (photo, cuisine, timings) render via a dedicated
+    // component instead of the shared price-driven CategoryPageView.
+    if (slug === "restaurants" || slug === "cafe" || slug === "salon-spa") {
       return (
         <RestaurantListPageView
           category={categorySummary}
