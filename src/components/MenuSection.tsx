@@ -1,11 +1,15 @@
 import { DocumentIcon } from "./DocumentIcon";
 
 function filenameFromUrl(url: string) {
+  // `new URL` requires an absolute URL — fall back to treating a
+  // relative path (e.g. "/menus/cafe/saint-cloud-menu.pdf") as the
+  // path directly, rather than always hitting the generic fallback.
   try {
     const path = new URL(url).pathname;
     return decodeURIComponent(path.split("/").pop() || "Menu.pdf");
   } catch {
-    return "Menu.pdf";
+    const lastSegment = url.split("/").pop();
+    return lastSegment ? decodeURIComponent(lastSegment) : "Menu.pdf";
   }
 }
 
