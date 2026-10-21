@@ -83,9 +83,22 @@ create table public.listings (
   description text,
   overview_points jsonb,
   photos text[] not null default '{}',
+  -- location_address/lat/lng hold precise location data. For
+  -- booking-flow categories this is legacy/unused going forward — the
+  -- precise address/coordinates/map link live in the private
+  -- listing_locations table instead (anon key has zero access to it),
+  -- and only the public area_name column below is shown on the site.
+  -- Restaurants/Cafe still use location_address/lat/lng directly, since
+  -- they're info-only with no booking flow to gate the exact place
+  -- behind.
   location_address text,
   location_lat double precision,
   location_lng double precision,
+  -- Public-safe, deliberately vague locality name (e.g. "Candolim"),
+  -- shown in place of the exact address/map link for booking-flow
+  -- categories. Null for info-only categories (restaurants/cafe) and
+  -- for listings that haven't been migrated to the new convention yet.
+  area_name text,
   quick_answers jsonb not null default '[]'::jsonb,
   pricing_type text not null check (pricing_type in ('single', 'tiered', 'multi_service')),
   -- pricing_data shape depends on pricing_type. Every price is always an
@@ -103,6 +116,27 @@ create table public.listings (
   menu_pdf_url text,
   unique (activity_category, slug)
 );
+
+-- Precise location data for booking-flow listings (full address,
+-- coordinates, and/or a direct map link). RLS enabled with NO policies
+-- for anon/authenticated at all — not even a read policy — so the
+-- public anon key gets zero access, unlike every other table here
+-- which is at least readable when is_active = true. One listing can
+-- have several rows (branch_label set) for multi-branch listings like
+-- Salon & Spa. Only ever read via the Supabase Studio dashboard or a
+-- trusted service_role backend, never the public site.
+create table public.listing_locations (
+  id uuid primary key default gen_random_uuid(),
+  listing_id uuid not null references public.listings(id) on delete cascade,
+  branch_label text,
+  address text,
+  lat double precision,
+  lng double precision,
+  map_link text,
+  created_at timestamptz not null default now()
+);
+
+alter table public.listing_locations enable row level security;
 
 -- Row Level Security: enabled with no policies, so the public/publishable
 -- key has zero access via the REST API. All access goes through the

@@ -4,7 +4,7 @@ import { StickyContactBar } from "./StickyContactBar";
 import { BackLink } from "./BackLink";
 import { OverviewPointsCard } from "./OverviewPointsCard";
 import { QuickAnswersCard } from "./QuickAnswersCard";
-import { LocationCard } from "./LocationCard";
+import { BookNowButton } from "./BookNowButton";
 import { PricingSection } from "./PricingSection";
 import { whatsAppLink, callLink, WHATSAPP_NUMBERS } from "@/lib/contact";
 import type { Listing } from "@/lib/listings";
@@ -58,11 +58,15 @@ export function ListingPageView({
 
         <QuickAnswersCard answers={listing.quick_answers} />
 
-        <LocationCard
-          address={listing.location_address}
-          lat={listing.location_lat}
-          lng={listing.location_lng}
-        />
+        {listing.area_name && (
+          <div className="mt-6 rounded-2xl border border-amber-950/20 bg-amber-900 p-4 shadow-md">
+            <h2 className="font-heading text-lg font-bold text-white">Location</h2>
+            <p className="mt-2 text-sm text-amber-100">{listing.area_name}</p>
+            <div className="mt-4">
+              <BookNowButton href={whatsAppLink(phone, generalMessage)} />
+            </div>
+          </div>
+        )}
       </main>
     </PageShell>
   );

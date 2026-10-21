@@ -43,7 +43,7 @@ export default async function ListingPage({
   const { data: listing } = await supabase
     .from("listings")
     .select(
-      "activity_category, slug, name, description, overview_points, photos, location_address, location_lat, location_lng, quick_answers, pricing_type, pricing_data, contact_type, menu_pdf_url"
+      "activity_category, slug, name, description, overview_points, photos, location_address, location_lat, location_lng, area_name, quick_answers, pricing_type, pricing_data, contact_type, menu_pdf_url"
     )
     .eq("activity_category", slug)
     .eq("slug", packageSlug)

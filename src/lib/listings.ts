@@ -42,6 +42,7 @@ export type Listing = {
   location_address: string | null;
   location_lat: number | null;
   location_lng: number | null;
+  area_name: string | null;
   quick_answers: QuickAnswer[];
   pricing_type: PricingType;
   pricing_data: SinglePricingData | TieredPricingData | MultiServicePricingData;

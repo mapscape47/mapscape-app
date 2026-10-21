@@ -4,7 +4,7 @@ import { StickyContactBar } from "./StickyContactBar";
 import { BackLink } from "./BackLink";
 import { OverviewPointsCard } from "./OverviewPointsCard";
 import { QuickAnswersCard } from "./QuickAnswersCard";
-import { LocationLinksSection } from "./LocationLinksSection";
+import { BookNowButton } from "./BookNowButton";
 import { MenuSection } from "./MenuSection";
 import { whatsAppLink, callLink, WHATSAPP_NUMBERS } from "@/lib/contact";
 import type { Listing } from "@/lib/listings";
@@ -23,9 +23,12 @@ export function SalonSpaDetailPageView({
   const phone = WHATSAPP_NUMBERS[listing.contact_type];
   const generalMessage = `Hi Mapscape, I'm interested in ${listing.name}.`;
 
-  const branchLocations = listing.quick_answers
+  // Branch area names only — never the map link that used to sit in
+  // `value`, so a customer can't skip straight to the exact spot
+  // without booking through us first.
+  const branchAreaNames = listing.quick_answers
     .filter((qa) => qa.label.startsWith(BRANCH_PREFIX))
-    .map((qa) => ({ label: qa.label.slice(BRANCH_PREFIX.length), mapLink: qa.value }));
+    .map((qa) => qa.label.slice(BRANCH_PREFIX.length));
   const otherAnswers = listing.quick_answers.filter((qa) => !qa.label.startsWith(BRANCH_PREFIX));
 
   return (
@@ -63,7 +66,17 @@ export function SalonSpaDetailPageView({
 
         <QuickAnswersCard answers={otherAnswers} />
 
-        <LocationLinksSection locations={branchLocations} />
+        {branchAreaNames.length > 0 && (
+          <div className="mt-6 rounded-2xl border border-amber-950/20 bg-amber-900 p-4 shadow-md">
+            <h2 className="font-heading text-lg font-bold text-white">
+              {branchAreaNames.length > 1 ? "Locations" : "Location"}
+            </h2>
+            <p className="mt-2 text-sm text-amber-100">{branchAreaNames.join(", ")}</p>
+            <div className="mt-4">
+              <BookNowButton href={whatsAppLink(phone, generalMessage)} />
+            </div>
+          </div>
+        )}
 
         <MenuSection menuPdfUrl={listing.menu_pdf_url} />
       </main>
