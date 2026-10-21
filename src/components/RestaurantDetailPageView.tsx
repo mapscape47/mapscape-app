@@ -5,7 +5,7 @@ import { BackLink } from "./BackLink";
 import { OverviewPointsCard } from "./OverviewPointsCard";
 import { QuickAnswersCard } from "./QuickAnswersCard";
 import { LocationCard } from "./LocationCard";
-import { MenuSection } from "./MenuSection";
+import { MenuSection, type MenuItem } from "./MenuSection";
 import { whatsAppLink, callLink, WHATSAPP_NUMBERS } from "@/lib/contact";
 import type { Listing } from "@/lib/listings";
 
@@ -14,7 +14,7 @@ export function RestaurantDetailPageView({
   parentSlug,
   parentName,
 }: {
-  listing: Listing & { menu_pdf_url: string | null };
+  listing: Listing & { menu_pdf_url: string | null; menu_pdfs?: MenuItem[] | null };
   parentSlug: string;
   parentName: string;
 }) {
@@ -62,7 +62,7 @@ export function RestaurantDetailPageView({
           lng={listing.location_lng}
         />
 
-        <MenuSection menuPdfUrl={listing.menu_pdf_url} />
+        <MenuSection menuPdfUrl={listing.menu_pdf_url} menus={listing.menu_pdfs} />
       </main>
     </PageShell>
   );

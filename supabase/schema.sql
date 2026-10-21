@@ -111,9 +111,15 @@ create table public.listings (
   pricing_data jsonb not null,
   contact_type text not null check (contact_type in ('water', 'land')),
   is_active boolean not null default true,
-  -- Link to an uploaded PDF (e.g. Supabase Storage) for the Menu section.
-  -- Restaurant listings only; null everywhere else and the section doesn't render.
+  -- Link to a single uploaded PDF for the Menu section (legacy/simple
+  -- case — one menu, no label). Restaurant/Cafe/Salon & Spa listings
+  -- only; null everywhere else and the section doesn't render.
   menu_pdf_url text,
+  -- Multiple labeled menu PDFs, e.g. [{"label": "Food Menu", "url":
+  -- "..."}, {"label": "Bar Menu", "url": "..."}]. Takes priority over
+  -- menu_pdf_url when present and non-empty; same Menu section, one
+  -- "View {label}" button per entry instead of one generic button.
+  menu_pdfs jsonb,
   unique (activity_category, slug)
 );
 

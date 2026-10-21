@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { ListingPageView } from "@/components/ListingPageView";
 import { RentalListPageView, type RentalVehicle } from "@/components/RentalListPageView";
 import { RestaurantDetailPageView } from "@/components/RestaurantDetailPageView";
+import type { MenuItem } from "@/components/MenuSection";
 import { SalonSpaDetailPageView } from "@/components/SalonSpaDetailPageView";
 import type { Listing } from "@/lib/listings";
 
@@ -43,7 +44,7 @@ export default async function ListingPage({
   const { data: listing } = await supabase
     .from("listings")
     .select(
-      "activity_category, slug, name, description, overview_points, photos, location_address, location_lat, location_lng, area_name, quick_answers, pricing_type, pricing_data, contact_type, menu_pdf_url"
+      "activity_category, slug, name, description, overview_points, photos, location_address, location_lat, location_lng, area_name, quick_answers, pricing_type, pricing_data, contact_type, menu_pdf_url, menu_pdfs"
     )
     .eq("activity_category", slug)
     .eq("slug", packageSlug)
@@ -66,7 +67,12 @@ export default async function ListingPage({
   if (slug === "restaurants" || slug === "cafe") {
     return (
       <RestaurantDetailPageView
-        listing={listing as unknown as Listing & { menu_pdf_url: string | null }}
+        listing={
+          listing as unknown as Listing & {
+            menu_pdf_url: string | null;
+            menu_pdfs?: MenuItem[] | null;
+          }
+        }
         parentSlug={slug}
         parentName={parentName}
       />
