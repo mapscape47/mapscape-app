@@ -43,6 +43,10 @@ export function RentalListPageView({
   const phone = WHATSAPP_NUMBERS.land;
   const copy = COPY[vehicleType];
   const generalMessage = `Hi Mapscape, I'm interested in ${copy.title}.`;
+  const headerImages = vehicles
+    .map((vehicle) => vehicle.photos[0])
+    .filter((photo): photo is string => Boolean(photo))
+    .slice(0, 5);
 
   return (
     <PageShell
@@ -50,7 +54,7 @@ export function RentalListPageView({
       footerCallHref={callLink(phone)}
     >
       <div className="mx-auto max-w-lg px-4 pt-4 sm:max-w-2xl">
-        <ImageSlider />
+        <ImageSlider images={headerImages} />
       </div>
 
       <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">
