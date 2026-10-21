@@ -71,9 +71,21 @@ export function SalonSpaDetailPageView({
             <h2 className="font-heading text-lg font-bold text-white">
               {branchAreaNames.length > 1 ? "Locations" : "Location"}
             </h2>
-            <p className="mt-2 text-sm text-amber-100">{branchAreaNames.join(", ")}</p>
-            <div className="mt-4">
-              <BookNowButton href={whatsAppLink(phone, generalMessage)} />
+            <div className="mt-3 flex flex-col gap-4">
+              {branchAreaNames.map((branch) => (
+                <div key={branch}>
+                  <p className="text-sm text-amber-100">{branch}</p>
+                  <div className="mt-2">
+                    <BookNowButton
+                      label="Book Appointment"
+                      href={whatsAppLink(
+                        phone,
+                        `Hi Mapscape, I would like to book an appointment at ${listing.name} in ${branch} location.`
+                      )}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
