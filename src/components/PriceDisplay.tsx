@@ -24,7 +24,7 @@ export function PriceDisplay({ originalPrice, displayPrice, prefix, size = "md" 
     <p className="flex flex-wrap items-baseline gap-1.5">
       {prefix && <span className="text-sm text-amber-100">{prefix}</span>}
       {hasDiscount && (
-        <span className={`${ORIGINAL_SIZE[size]} text-amber-200/70 line-through`}>
+        <span className={`${ORIGINAL_SIZE[size]} text-amber-200/85 line-through`}>
           ₹{originalPrice!.toLocaleString("en-IN")}
         </span>
       )}

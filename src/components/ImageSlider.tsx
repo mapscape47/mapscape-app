@@ -16,7 +16,7 @@ const PLACEHOLDER_SLIDES = [
 const AUTO_ADVANCE_MS = 4000;
 const RESUME_AFTER_MS = 5000;
 
-export function ImageSlider({ images }: { images?: string[] }) {
+export function ImageSlider({ images, alt = "" }: { images?: string[]; alt?: string }) {
   const usingRealImages = Boolean(images && images.length > 0);
   const slides = usingRealImages ? (images as string[]) : PLACEHOLDER_SLIDES;
 
@@ -80,7 +80,7 @@ export function ImageSlider({ images }: { images?: string[] }) {
             {usingRealImages ? (
               <Image
                 src={slide}
-                alt=""
+                alt={alt}
                 fill
                 sizes="(max-width: 640px) 100vw, 672px"
                 className="object-cover"

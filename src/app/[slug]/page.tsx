@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { CategoryPageView } from "@/components/CategoryPageView";
@@ -7,6 +8,57 @@ import { TaxiPageView, type TaxiCar } from "@/components/TaxiPageView";
 import { RestaurantListPageView } from "@/components/RestaurantListPageView";
 import type { Category } from "@/lib/contact";
 import type { Listing } from "@/lib/listings";
+
+function truncate(text: string | null | undefined, max = 155) {
+  if (!text) return undefined;
+  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  if (slug === "rental") {
+    return {
+      title: "Bike & Car Rental in Goa",
+      description: "Self-drive bike and car rentals in Goa — browse vehicles and book directly on WhatsApp.",
+    };
+  }
+
+  if (slug === "taxi") {
+    return {
+      title: "Taxi Service in Goa",
+      description: "Book a taxi anywhere in Goa, arranged directly over WhatsApp.",
+    };
+  }
+
+  const supabase = await createClient();
+
+  const { data: activity } = await supabase
+    .from("activities")
+    .select("name, description")
+    .eq("slug", slug)
+    .single();
+
+  if (activity) {
+    return { title: activity.name, description: truncate(activity.description) };
+  }
+
+  const { data: attraction } = await supabase
+    .from("attractions")
+    .select("name, description")
+    .eq("slug", slug)
+    .single();
+
+  if (attraction) {
+    return { title: attraction.name, description: truncate(attraction.description) };
+  }
+
+  return {};
+}
 
 export default async function SlugPage({
   params,

@@ -38,7 +38,7 @@ export function AttractionPageView({
       footerCallHref={callLink(GENERAL_PHONE)}
     >
       <div className="mx-auto max-w-lg px-4 pt-4 sm:max-w-2xl">
-        <ImageSlider images={attraction.image_urls} />
+        <ImageSlider images={attraction.image_urls} alt={attraction.name} />
       </div>
 
       <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">

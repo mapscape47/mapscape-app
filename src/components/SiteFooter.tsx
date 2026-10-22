@@ -3,11 +3,9 @@ import { WhatsAppIcon } from "./WhatsAppIcon";
 import { PhoneIcon } from "./PhoneIcon";
 import { EmailIcon, InstagramIcon, FacebookIcon, YouTubeIcon, LinkedInIcon } from "./SocialIcons";
 
-const QUICK_LINKS = [
-  { label: "About Us", href: "#" },
-  { label: "Contact Us", href: "#" },
-  { label: "Blogs", href: "#" },
-  { label: "Offers", href: "#" },
+// "Blogs" and "Offers" are left out rather than linked to placeholder
+// pages — neither feature exists yet, so there's nothing real to link to.
+const STATIC_QUICK_LINKS = [
   { label: "Privacy Policy", href: "#" },
   { label: "Terms of Use", href: "#" },
 ];
@@ -50,6 +48,14 @@ export function SiteFooter({
   callHref,
   email = "mapscape47@gmail.com",
 }: SiteFooterProps) {
+  // "Contact Us" points at the same WhatsApp conversation as the icon
+  // above — the site has no contact form, WhatsApp is the real channel.
+  const quickLinks = [
+    { label: "About Us", href: "/about" },
+    { label: "Contact Us", href: whatsAppHref },
+    ...STATIC_QUICK_LINKS,
+  ];
+
   return (
     <footer className="bg-amber-900 px-4 pt-8 pb-8 text-amber-50">
       <div className="mx-auto max-w-lg sm:max-w-2xl">
@@ -65,21 +71,21 @@ export function SiteFooter({
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
           >
             <WhatsAppIcon />
           </a>
           <a
             href={`mailto:${email}`}
             aria-label="Email"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
           >
             <EmailIcon />
           </a>
           <a
             href={callHref}
             aria-label="Call"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
           >
             <PhoneIcon />
           </a>
@@ -89,20 +95,20 @@ export function SiteFooter({
           <h3 className="text-xs font-semibold uppercase tracking-wider text-emerald-300">
             Contact Details
           </h3>
-          <ul className="mt-3 space-y-2 text-sm text-amber-100">
+          <ul className="mt-1 text-sm text-amber-100">
             {CONTACT_NUMBERS.map((contact) => (
               <li key={contact.href}>
-                <a href={contact.href} className="transition-colors hover:text-white">
+                <a href={contact.href} className="inline-block py-3 transition-colors hover:text-white">
                   {contact.display}
                 </a>
               </li>
             ))}
             <li>
-              <a href={`mailto:${email}`} className="transition-colors hover:text-white">
+              <a href={`mailto:${email}`} className="inline-block py-3 transition-colors hover:text-white">
                 {email}
               </a>
             </li>
-            <li>{ADDRESS}</li>
+            <li className="py-3">{ADDRESS}</li>
           </ul>
         </div>
 
@@ -111,14 +117,22 @@ export function SiteFooter({
             <h3 className="text-xs font-semibold uppercase tracking-wider text-emerald-300">
               Quick Links
             </h3>
-            <ul className="mt-3 space-y-2 text-sm text-amber-100">
-              {QUICK_LINKS.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="transition-colors hover:text-white">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+            <ul className="mt-1 text-sm text-amber-100">
+              {quickLinks.map((link) => {
+                const isExternal = link.href.startsWith("http");
+                return (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                      className="inline-block py-3 transition-colors hover:text-white"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -134,7 +148,7 @@ export function SiteFooter({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -144,7 +158,7 @@ export function SiteFooter({
         </div>
 
         <div className="mt-8 border-t border-white/10 pt-4">
-          <p className="text-center text-xs text-amber-200/70">© 2026 Mapscape. All rights reserved.</p>
+          <p className="text-center text-xs text-amber-200/85">© 2026 Mapscape. All rights reserved.</p>
         </div>
       </div>
     </footer>

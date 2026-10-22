@@ -30,7 +30,7 @@ export function TaxiPageView({ cars }: { cars: TaxiCar[] }) {
       footerCallHref={callLink(phone)}
     >
       <div className="mx-auto max-w-lg px-4 pt-4 sm:max-w-2xl">
-        <ImageSlider images={headerImages} />
+        <ImageSlider images={headerImages} alt="Taxi" />
       </div>
 
       <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">

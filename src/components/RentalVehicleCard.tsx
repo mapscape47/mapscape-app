@@ -29,7 +29,7 @@ export function RentalVehicleCard({
       <div className="relative h-40 w-full bg-gradient-to-br from-emerald-100 via-stone-100 to-sky-100">
         {imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={imageUrl} alt={name} className="h-full w-full object-cover" />
+          <img src={imageUrl} alt={name} loading="lazy" className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-5xl" aria-hidden="true">
             {placeholderIcon}

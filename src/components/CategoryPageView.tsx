@@ -37,7 +37,7 @@ export function CategoryPageView({
       }
     >
       <div className="mx-auto max-w-lg px-4 pt-4 sm:max-w-2xl">
-        <ImageSlider images={category.image_urls} />
+        <ImageSlider images={category.image_urls} alt={category.name} />
       </div>
 
       <main className="mx-auto max-w-lg px-4 py-6 sm:max-w-2xl">

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { ListingPageView } from "@/components/ListingPageView";
@@ -12,6 +13,45 @@ function humanizeSlug(slug: string) {
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+function truncate(text: string | null | undefined, max = 155) {
+  if (!text) return undefined;
+  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+}
+
+const RENTAL_TITLES: Record<"bike" | "car", string> = {
+  bike: "Bike Rental in Goa",
+  car: "Car Rental in Goa",
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; packageSlug: string }>;
+}): Promise<Metadata> {
+  const { slug, packageSlug } = await params;
+
+  if (slug === "rental" && (packageSlug === "bike" || packageSlug === "car")) {
+    return {
+      title: RENTAL_TITLES[packageSlug],
+      description: `Self-drive ${packageSlug} rentals in Goa — browse vehicles and book directly on WhatsApp.`,
+    };
+  }
+
+  const supabase = await createClient();
+  const { data: listing } = await supabase
+    .from("listings")
+    .select("name, description")
+    .eq("activity_category", slug)
+    .eq("slug", packageSlug)
+    .single();
+
+  if (!listing) {
+    return { title: humanizeSlug(packageSlug) };
+  }
+
+  return { title: listing.name, description: truncate(listing.description) };
 }
 
 export default async function ListingPage({

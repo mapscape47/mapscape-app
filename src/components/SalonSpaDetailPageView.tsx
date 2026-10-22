@@ -47,7 +47,7 @@ export function SalonSpaDetailPageView({
       <div className="mx-auto max-w-lg px-4 pt-4 sm:max-w-2xl">
         <BackLink href={`/${parentSlug}`} label={`Back to ${parentName}`} />
         <div className="mt-3">
-          <ImageSlider images={listing.photos} />
+          <ImageSlider images={listing.photos} alt={listing.name} />
         </div>
       </div>
 

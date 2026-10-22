@@ -54,7 +54,7 @@ export function SuggestedActivityCard({
       className="block w-full cursor-pointer overflow-hidden rounded-2xl border border-amber-950/20 bg-amber-900 shadow-md"
     >
       <div className="relative">
-        <ImageSlider images={images} />
+        <ImageSlider images={images} alt={title} />
         {tag && (
           <span className="pointer-events-none absolute left-4 top-4 inline-block rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-medium text-emerald-700 backdrop-blur">
             {tag}

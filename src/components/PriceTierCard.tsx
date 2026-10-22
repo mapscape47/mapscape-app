@@ -28,7 +28,7 @@ export function PriceTierCard({
       <div className="relative h-40 w-full bg-gradient-to-br from-emerald-100 via-stone-100 to-sky-100">
         {imageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={imageUrl} alt={title} className="h-full w-full object-cover" />
+          <img src={imageUrl} alt={title} loading="lazy" className="h-full w-full object-cover" />
         )}
         {tag && (
           <span className="absolute left-3 top-3 inline-block rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-medium text-emerald-700 backdrop-blur">
