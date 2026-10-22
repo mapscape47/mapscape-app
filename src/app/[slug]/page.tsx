@@ -87,19 +87,22 @@ export default async function SlugPage({
       .single(),
     supabase
       .from("activities")
-      .select("name, slug, category, image_url")
-      .eq("is_active", true)
-      .limit(4),
+      .select("name, slug, category, image_urls")
+      .eq("is_active", true),
   ]);
 
   if (attraction) {
     return (
       <AttractionPageView
         attraction={{ ...attraction, image_urls: attraction.image_urls ?? [] }}
-        suggestedActivities={(suggestedActivities ?? []).map((a) => ({
-          ...a,
-          category: a.category as Category,
-        }))}
+        suggestedActivities={(suggestedActivities ?? [])
+          .filter((a) => a.image_urls && a.image_urls.length > 0)
+          .slice(0, 4)
+          .map((a) => ({
+            ...a,
+            category: a.category as Category,
+            image_urls: a.image_urls as string[],
+          }))}
       />
     );
   }

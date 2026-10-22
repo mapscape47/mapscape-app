@@ -1,5 +1,5 @@
 import { ImageSlider } from "./ImageSlider";
-import { PriceTierCard } from "./PriceTierCard";
+import { SuggestedActivityCard } from "./SuggestedActivityCard";
 import { PageShell } from "./PageShell";
 import { MapPinIcon } from "./MapPinIcon";
 import { CATEGORY_LABELS, WHATSAPP_NUMBERS, callLink, whatsAppLink, type Category } from "@/lib/contact";
@@ -16,7 +16,7 @@ type SuggestedActivity = {
   name: string;
   slug: string;
   category: Category;
-  image_url: string | null;
+  image_urls: string[];
 };
 
 // General business contact — attractions have no commission category of
@@ -67,11 +67,11 @@ export function AttractionPageView({
             <h2 className="font-heading text-lg font-bold text-stone-800">You Might Also Like</h2>
             <div className="mt-4 flex flex-col gap-4">
               {suggestedActivities.map((activity) => (
-                <PriceTierCard
+                <SuggestedActivityCard
                   key={activity.slug}
                   title={activity.name}
                   tag={CATEGORY_LABELS[activity.category]}
-                  imageUrl={activity.image_url ?? undefined}
+                  images={activity.image_urls}
                   linkHref={`/${activity.slug}`}
                 />
               ))}
