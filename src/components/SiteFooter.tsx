@@ -6,8 +6,8 @@ import { EmailIcon, InstagramIcon, FacebookIcon, YouTubeIcon, LinkedInIcon } fro
 // "Blogs" and "Offers" are left out rather than linked to placeholder
 // pages — neither feature exists yet, so there's nothing real to link to.
 const STATIC_QUICK_LINKS = [
-  { label: "Privacy Policy", href: "#" },
-  { label: "Terms of Use", href: "#" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Use", href: "/terms" },
 ];
 
 const SOCIAL_LINKS = [
